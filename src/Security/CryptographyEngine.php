@@ -47,6 +47,7 @@ class CryptographyEngine
 	 */
 	public function encrypt($text, $email)
 	{
-		return $this->crypter->crypt($text, $this->hash($email));
+		$key = $this->hasher->key($email, $this->crypter->getKeySize());
+		return $this->crypter->crypt($text, $key);
 	}
 }

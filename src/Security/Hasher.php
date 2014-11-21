@@ -94,4 +94,17 @@ class Hasher
 		else
 			return bin2hex(substr($output, 0, $key_length));
 	}
+
+	/**
+	 * returns a key of defined size
+	 *
+	 * @param string $email
+	 * @param int $keySize
+	 *
+	 * @return string
+	 */
+	public function key($email, $keySize)
+	{
+		return substr($email . $this->salt, 0, $keySize);
+	}
 }
