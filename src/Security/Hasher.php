@@ -31,11 +31,11 @@ class Hasher
 	 *
 	 * @param string $text
 	 *
-	 * @return string
+	 * @return string (254 chars returned)
 	 */
 	public function hash($text)
 	{
-		return $this->hash_pbkdf2('SHA256', $text, $this->salt, 1000, 256, false);
+		return $this->hash_pbkdf2('SHA256', $text, $this->salt, 1000, 127, false);
 	}
 
 	/**
