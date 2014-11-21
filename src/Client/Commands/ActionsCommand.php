@@ -73,10 +73,10 @@ class ActionsCommand extends Command
 			'hash' => $cryptographyEngine->hash($this->email),
 		);
 
-		if ( ! empty($this->action))
+		if (null !== $this->action)
 			$params['action'] = $this->action;
 
-		if ( ! empty($this->scope))
+		if (null !== $this->scope)
 			$params['scope'] = $this->scope;
 
 		$query = http_build_query($params);
