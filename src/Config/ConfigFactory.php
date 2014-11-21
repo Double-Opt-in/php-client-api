@@ -16,9 +16,9 @@ class ConfigFactory
 	 *
 	 * array(
 	 *   'api' => '',  // optional
-	 *   'clientId' => '...',
-	 *   'clientSecret' => '...',
-	 *   'siteToken' => '',
+	 *   'client_id' => '...',
+	 *   'client_secret' => '...',
+	 *   'site_token' => '',
 	 * )
 	 *
 	 * @param array $data
@@ -28,17 +28,33 @@ class ConfigFactory
 	 */
 	public static function fromArray(array $data)
 	{
-		if ( ! array_key_exists('clientId', $data))
-			throw new ClientConfigurationException('Configuration file has no clientId set');
-		if ( ! array_key_exists('clientSecret', $data))
-			throw new ClientConfigurationException('Configuration file has no clientSecret set');
-		if ( ! array_key_exists('siteToken', $data))
-			throw new ClientConfigurationException('Configuration file has no siteToken set');
+		if ( ! array_key_exists('client_id', $data))
+			throw new ClientConfigurationException('Configuration file has no client_id set');
+		if ( ! array_key_exists('client_secret', $data))
+			throw new ClientConfigurationException('Configuration file has no client_secret set');
+		if ( ! array_key_exists('site_token', $data))
+			throw new ClientConfigurationException('Configuration file has no site_token set');
 
 		$baseUrl = ( ! array_key_exists('api', $data))
 			? null
 			: $data['api'];
 
-		return new ClientConfig($data['clientId'], $data['clientSecret'], $data['siteToken'], $baseUrl);
+		return new ClientConfig($data['client_id'], $data['client_secret'], $data['site_token'], $baseUrl);
+	}
+
+	/**
+	 * creates a configuration from a php file returning an array
+	 *
+	 * @param string $filename
+	 *
+	 * @return ClientConfig
+	 * @throws ClientConfigurationException
+	 */
+	public static function fromFile($filename)
+	{
+		if ( ! file_exists($filename))
+			throw new ClientConfigurationException('Configuration file ' . $filename . ' does not exists');
+
+		return static::fromArray(include $filename);
 	}
 }
