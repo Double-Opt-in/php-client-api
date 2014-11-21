@@ -1,6 +1,5 @@
-<?php namespace DoubleOptIn\ClientApi\Config\Storage;
+<?php namespace DoubleOptIn\ClientApi\Config;
 
-use DoubleOptIn\ClientApi\Config\ClientConfig;
 use DoubleOptIn\ClientApi\Exceptions\ClientConfigurationException;
 
 /**
@@ -16,9 +15,10 @@ class ConfigFactory
 	 * creates a configuration from array
 	 *
 	 * array(
+	 *   'api' => '',  // optional
 	 *   'clientId' => '...',
 	 *   'clientSecret' => '...',
-	 *   'permissions' => array(),  // optional
+	 *   'siteToken' => '',
 	 * )
 	 *
 	 * @param array $data
@@ -32,9 +32,13 @@ class ConfigFactory
 			throw new ClientConfigurationException('Configuration file has no clientId set');
 		if ( ! array_key_exists('clientSecret', $data))
 			throw new ClientConfigurationException('Configuration file has no clientSecret set');
+		if ( ! array_key_exists('siteToken', $data))
+			throw new ClientConfigurationException('Configuration file has no siteToken set');
 
-		$clientPermissions = array_key_exists('permissions', $data) ? $data['permissions'] : array();
+		$baseUrl = ( ! array_key_exists('api', $data))
+			? null
+			: $data['api'];
 
-		return new ClientConfig($data['clientId'], $data['clientSecret'], $clientPermissions);
+		return new ClientConfig($data['clientId'], $data['clientSecret'], $data['siteToken'], $baseUrl);
 	}
 }
