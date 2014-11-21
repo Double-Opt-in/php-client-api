@@ -52,7 +52,8 @@ class ConfigFactory
 	 */
 	public static function fromFile($filename)
 	{
-		if ( ! file_exists($filename))
+		$filename = realpath($filename);
+		if ($filename === false)
 			throw new ClientConfigurationException('Configuration file ' . $filename . ' does not exists');
 
 		return static::fromArray(include $filename);
