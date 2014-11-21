@@ -40,6 +40,13 @@ interface ClientCommand
 	public function format();
 
 	/**
+	 * returns additional headers for the command request
+	 *
+	 * @return array
+	 */
+	public function headers();
+
+	/**
 	 * returns the body to send
 	 *
 	 * @return string|resource|array|EntityBodyInterface|null

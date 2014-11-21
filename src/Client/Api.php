@@ -4,7 +4,6 @@ use CommerceGuys\Guzzle\Plugin\Oauth2\GrantType\ClientCredentials;
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
 use DoubleOptIn\ClientApi\Config\ClientConfig;
 use DoubleOptIn\ClientApi\Config\Properties;
-use DoubleOptIn\ClientApi\Exceptions\ClientConfigurationException;
 use DoubleOptIn\ClientApi\Guzzle\Plugin\OAuth2Plugin;
 use Guzzle\Http\Client;
 use Guzzle\Http\ClientInterface;
@@ -88,45 +87,6 @@ class Api implements ApiInterface
 	/**
 	 * get all actions
 	 *
-	 * @throws ClientConfigurationException
-	 * @return \stdClass
-	 *//*
-	public function actions()
-	{
-		$response = null;
-
-		try {
-			$request = $this->client->get(Properties::actionsUrl());
-			$response = $request->send();
-
-			/*
-			 * @TODO store that limiter values
-			X-RateLimit-Limit: 1000
-			X-RateLimit-Remaining: 967
-			X-RateLimit-Reset: 1416432343
-			*/
-		/*} catch (ClientErrorResponseException $exception) {
-			echo 'Error occurred for last request...';
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- REQUEST ---';
-			echo PHP_EOL;
-			echo $exception->getRequest()->getRawHeaders();
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- RESPONSE ---';
-			echo PHP_EOL;
-			echo $exception->getResponse()->getRawHeaders();
-			echo $exception->getResponse()->getBody();
-			echo PHP_EOL;
-		}
-
-		return json_decode($response->getBody(true));
-	}*/
-
-	/**
-	 * get all actions
-	 *
 	 * @param ClientCommand $command
 	 *
 	 * @return \Guzzle\Http\Message\RequestInterface
@@ -136,7 +96,7 @@ class Api implements ApiInterface
 		$request = $this->client->createRequest(
 			$command->method(),
 			$command->uri(),
-			$this->headers($command->apiVersion(), $command->format()),
+			$this->headers($command->apiVersion(), $command->format(), $command->headers()),
 			$command->body()
 		);
 
@@ -194,14 +154,15 @@ class Api implements ApiInterface
 	 *
 	 * @param string $apiVersion
 	 * @param string $format
+	 * @param array $additionalHeaders
 	 *
 	 * @return array
 	 */
-	private function headers($apiVersion, $format)
+	private function headers($apiVersion, $format, array $additionalHeaders = array())
 	{
-		return array(
+		return array_merge(array(
 			'Accept' => 'application/vnd.double-opt-in.' . $apiVersion . '+' . $format,
 			'Content-Type' => 'application/' . $format,
-		);
+		), $additionalHeaders);
 	}
 }

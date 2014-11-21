@@ -38,6 +38,13 @@ abstract class Command implements ClientCommand
 	protected $format = 'json';
 
 	/**
+	 * additional headers for request
+	 *
+	 * @var array
+	 */
+	protected $headers = array();
+
+	/**
 	 * returns the method
 	 *
 	 * @return string
@@ -75,6 +82,16 @@ abstract class Command implements ClientCommand
 	public function format()
 	{
 		return $this->format;
+	}
+
+	/**
+	 * returns the additional headers
+	 *
+	 * @return array
+	 */
+	public function headers()
+	{
+		return $this->headers;
 	}
 
 	/**
