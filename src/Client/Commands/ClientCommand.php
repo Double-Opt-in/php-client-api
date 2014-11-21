@@ -22,9 +22,11 @@ interface ClientCommand
 	/**
 	 * returns the uri or path to the command endpoint
 	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
 	 * @return string
 	 */
-	public function uri();
+	public function uri(CryptographyEngine $cryptographyEngine);
 
 	/**
 	 * returns the api version the command uses

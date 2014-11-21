@@ -105,7 +105,7 @@ class Api implements ApiInterface
 	{
 		$request = $this->client->createRequest(
 			$command->method(),
-			$command->uri(),
+			$command->uri($this->cryptographyEngine),
 			$this->headers($command->apiVersion(), $command->format(), $command->headers()),
 			$command->body($this->cryptographyEngine)
 		);

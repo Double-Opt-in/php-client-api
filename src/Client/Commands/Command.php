@@ -59,9 +59,11 @@ abstract class Command implements ClientCommand
 	/**
 	 * returns the uri or path to the command endpoint
 	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
 	 * @return string
 	 */
-	public function uri()
+	public function uri(CryptographyEngine $cryptographyEngine)
 	{
 		return $this->uri;
 	}
