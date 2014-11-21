@@ -1,5 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+
 /**
  * Class ValidateCommand
  *
@@ -24,11 +26,11 @@ class ValidateCommand extends Command
 	protected $uri = '/api/validate';
 
 	/**
-	 * hash
+	 * email
 	 *
 	 * @var string
 	 */
-	private $hash;
+	private $email;
 
 	/**
 	 * scope
@@ -38,24 +40,29 @@ class ValidateCommand extends Command
 	private $scope;
 
 	/**
-	 * @param string $hash
+	 * @param string $email
 	 * @param string|null $scope
 	 */
-	public function __construct($hash, $scope = null)
+	public function __construct($email, $scope = null)
 	{
-		$this->hash = $hash;
+		$this->email = $email;
 		$this->scope = $scope;
 	}
 
 	/**
 	 * returns the body
 	 *
+	 * hash: email will be hashed before requesting the server
+	 * scope: optional scope will be transmitted in plain text
+	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
 	 * @return array|\Guzzle\Http\EntityBodyInterface|null|resource|string
 	 */
-	public function body()
+	public function body(CryptographyEngine $cryptographyEngine)
 	{
 		$body = array(
-			'hash' => $this->hash,
+			'hash' => $cryptographyEngine->hash($this->email),
 		);
 
 		if ( ! empty($this->scope))

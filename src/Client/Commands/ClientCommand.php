@@ -1,5 +1,6 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\EntityBodyInterface;
 
 /**
@@ -49,7 +50,9 @@ interface ClientCommand
 	/**
 	 * returns the body to send
 	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
 	 * @return string|resource|array|EntityBodyInterface|null
 	 */
-	public function body();
+	public function body(CryptographyEngine $cryptographyEngine);
 }

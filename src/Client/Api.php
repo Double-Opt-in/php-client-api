@@ -5,6 +5,7 @@ use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
 use DoubleOptIn\ClientApi\Config\ClientConfig;
 use DoubleOptIn\ClientApi\Config\Properties;
 use DoubleOptIn\ClientApi\Guzzle\Plugin\OAuth2Plugin;
+use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Client;
 use Guzzle\Http\ClientInterface;
 use Guzzle\Http\Exception\ClientErrorResponseException;
@@ -39,6 +40,13 @@ class Api implements ApiInterface
 	private $client;
 
 	/**
+	 * the cryptography engine to use
+	 *
+	 * @var CryptographyEngine
+	 */
+	private $cryptographyEngine;
+
+	/**
 	 * @param ClientConfig $config
 	 * @param ClientInterface|null $client
 	 */
@@ -48,6 +56,8 @@ class Api implements ApiInterface
 		$this->client = $this->resolveClient($client);
 
 		$this->setupOAuth2Plugin();
+
+		$this->cryptographyEngine = new CryptographyEngine($config->siteToken());
 	}
 
 	/**
@@ -97,7 +107,7 @@ class Api implements ApiInterface
 			$command->method(),
 			$command->uri(),
 			$this->headers($command->apiVersion(), $command->format(), $command->headers()),
-			$command->body()
+			$command->body($this->cryptographyEngine)
 		);
 
 		try {
@@ -127,7 +137,7 @@ class Api implements ApiInterface
 			echo $exception->getRequest()->getRawHeaders();
 			echo PHP_EOL;
 			echo PHP_EOL;
-			echo $command->body();
+			echo $command->body($this->cryptographyEngine);
 			echo PHP_EOL;
 			echo PHP_EOL;
 			echo '--- RESPONSE ---';

@@ -1,5 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+
 /**
  * Class Command
  *
@@ -97,7 +99,9 @@ abstract class Command implements ClientCommand
 	/**
 	 * returns the body
 	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
 	 * @return array|\Guzzle\Http\EntityBodyInterface|null|resource|string
 	 */
-	abstract public function body();
+	abstract public function body(CryptographyEngine $cryptographyEngine);
 }
