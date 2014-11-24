@@ -1,6 +1,9 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\ValidateCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+use Guzzle\Http\Message\Response;
 
 /**
  * Class ValidateCommand
@@ -69,5 +72,17 @@ class ValidateCommand extends Command
 			$body['scope'] = $this->scope;
 
 		return json_encode($body);
+	}
+
+	/**
+	 * creates a response from http response
+	 *
+	 * @param Response $response
+	 *
+	 * @return ValidateCommandResponse
+	 */
+	public function response(Response $response)
+	{
+		return new ValidateCommandResponse($response);
 	}
 }

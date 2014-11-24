@@ -1,7 +1,9 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\EntityBodyInterface;
+use Guzzle\Http\Message\Response;
 
 /**
  * Interface ClientCommand
@@ -57,4 +59,13 @@ interface ClientCommand
 	 * @return string|resource|array|EntityBodyInterface|null
 	 */
 	public function body(CryptographyEngine $cryptographyEngine);
+
+	/**
+	 * creates a response from http response
+	 *
+	 * @param Response $response
+	 *
+	 * @return CommandResponse
+	 */
+	public function response(Response $response);
 }

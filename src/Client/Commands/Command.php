@@ -1,6 +1,11 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\ActionsCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\LogCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\ValidateCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+use Guzzle\Http\Message\Response;
 
 /**
  * Class Command
@@ -106,4 +111,13 @@ abstract class Command implements ClientCommand
 	 * @return array|\Guzzle\Http\EntityBodyInterface|null|resource|string
 	 */
 	abstract public function body(CryptographyEngine $cryptographyEngine);
+
+	/**
+	 * creates a response from http response
+	 *
+	 * @param Response $response
+	 *
+	 * @return CommandResponse|ActionsCommandResponse|LogCommandResponse|ValidateCommandResponse
+	 */
+	abstract public function response(Response $response);
 }

@@ -1,6 +1,9 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\ActionsCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+use Guzzle\Http\Message\Response;
 
 /**
  * Class ActionsCommand
@@ -94,5 +97,17 @@ class ActionsCommand extends Command
 	public function body(CryptographyEngine $cryptographyEngine)
 	{
 		return null;
+	}
+
+	/**
+	 * creates a response from http response
+	 *
+	 * @param Response $response
+	 *
+	 * @return CommandResponse
+	 */
+	public function response(Response $response)
+	{
+		return new ActionsCommandResponse($response);
 	}
 }

@@ -1,6 +1,9 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\LogCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+use Guzzle\Http\Message\Response;
 
 /**
  * Class LogCommand
@@ -118,5 +121,17 @@ class LogCommand extends Command
 			);
 
 		return json_encode($body);
+	}
+
+	/**
+	 * creates a response from http response
+	 *
+	 * @param Response $response
+	 *
+	 * @return LogCommandResponse
+	 */
+	public function response(Response $response)
+	{
+		return new LogCommandResponse($response);
 	}
 }
