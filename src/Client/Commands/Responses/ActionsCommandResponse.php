@@ -9,7 +9,6 @@
  */
 class ActionsCommandResponse extends CommandResponse
 {
-
 	/**
 	 * returns a string representation of the response, command-dependent
 	 *
@@ -21,10 +20,9 @@ class ActionsCommandResponse extends CommandResponse
 		$meta = $this->decoded()->meta;
 
 		$message = 'created at               | action (scope)' . PHP_EOL
-		          .'-------------------------+-------------------------';
+			. '-------------------------+-------------------------';
 
-		foreach ($data as $entry)
-		{
+		foreach ($data as $entry) {
 			$scope = ( ! empty($entry->scope)) ? ' (' . $entry->scope . ')' : '';
 			$message .= PHP_EOL . sprintf('%s | %s%s', $entry->created_at, $entry->action, $scope);
 		}
