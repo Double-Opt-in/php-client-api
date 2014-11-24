@@ -1,6 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Client;
 
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 
 /**
  * Interface ApiInterface
@@ -16,7 +17,7 @@ interface ApiInterface
 	 *
 	 * @param ClientCommand $command
 	 *
-	 * @return \Guzzle\Http\Message\RequestInterface
+	 * @return CommandResponse
 	 */
 	public function send(ClientCommand $command);
 }

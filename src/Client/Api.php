@@ -2,6 +2,7 @@
 
 use CommerceGuys\Guzzle\Plugin\Oauth2\GrantType\ClientCredentials;
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Config\ClientConfig;
 use DoubleOptIn\ClientApi\Config\Properties;
 use DoubleOptIn\ClientApi\Guzzle\Plugin\OAuth2Plugin;
@@ -99,7 +100,7 @@ class Api implements ApiInterface
 	 *
 	 * @param ClientCommand $command
 	 *
-	 * @return \Guzzle\Http\Message\RequestInterface
+	 * @return CommandResponse
 	 */
 	public function send(ClientCommand $command)
 	{
@@ -113,50 +114,12 @@ class Api implements ApiInterface
 		try {
 			$response = $request->send();
 		} catch (ClientErrorResponseException $exception) {
-			echo 'Error occurred for last request...';
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- REQUEST ---';
-			echo PHP_EOL;
-			echo $exception->getRequest()->getRawHeaders();
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- RESPONSE ---';
-			echo PHP_EOL;
-			echo $exception->getResponse()->getRawHeaders();
-			echo $exception->getResponse()->getBody();
-			echo PHP_EOL;
-
-			return null;
+			$response = $exception->getResponse();
 		} catch (ServerErrorResponseException $exception) {
-			echo 'Error occurred for last request...';
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- REQUEST ---';
-			echo PHP_EOL;
-			echo $exception->getRequest()->getRawHeaders();
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo $command->body($this->cryptographyEngine);
-			echo PHP_EOL;
-			echo PHP_EOL;
-			echo '--- RESPONSE ---';
-			echo PHP_EOL;
-			echo $exception->getResponse()->getRawHeaders();
-			echo $exception->getResponse()->getBody();
-			echo PHP_EOL;
-
-			return null;
+			$response = $exception->getResponse();
 		}
 
-		/** @var \Guzzle\Http\Message\Header $contentType */
-		$contentType = (string)$response->getHeader('content-type');
-		if ($contentType === 'application/json')
-		{
-			return json_decode($response->getBody(true));
-		}
-
-		return $response->getBody(true);
+		return $command->response($response);
 	}
 
 	/**
