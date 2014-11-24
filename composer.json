@@ -1,5 +1,5 @@
 {
-	"name": "Double-Opt-in/php-client-api",
+	"name": "double-opt-in/php-client-api",
 	"description": "This is the official client api for the Double-Opt-in service.",
 	"minimum-stability": "stable",
 	"license": "MIT",
