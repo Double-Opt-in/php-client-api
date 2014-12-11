@@ -1,6 +1,5 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
-use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Client\Commands\Responses\LogCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
@@ -26,7 +25,7 @@ class LogCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $uri = '/api/actions';
+	protected $uri = '/actions';
 
 	/**
 	 * email

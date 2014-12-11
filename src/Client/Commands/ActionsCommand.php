@@ -26,7 +26,7 @@ class ActionsCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $uri = '/api/actions';
+	protected $uri = '/actions';
 
 	/**
 	 * email

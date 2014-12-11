@@ -12,12 +12,12 @@ class Properties
 	/**
 	 * Url to the base api server
 	 */
-	const API_URL = 'https://double-opt.in';
+	const API_URL = 'https://double-opt.in/api';
 
 	/**
 	 * Path to the authorization endpoint
 	 */
-	const AUTHORIZE_PATH = '/api/access_token';
+	const AUTHORIZE_PATH = '/access_token';
 
 	/**
 	 * base url
