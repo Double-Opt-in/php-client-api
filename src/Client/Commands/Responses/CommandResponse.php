@@ -88,6 +88,10 @@ abstract class CommandResponse
 	 */
 	public function errorMessage()
 	{
+		if ($this->decoded() === null) {
+			throw new \RuntimeException('No result from server.');
+		}
+
 		$message = sprintf('%s (%s)', $this->decoded()->message, $this->statusCode());
 
 		if (isset($this->decoded()->errors)) {
