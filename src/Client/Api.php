@@ -24,7 +24,7 @@ class Api implements ApiInterface
 	/**
 	 * current client api version
 	 */
-	const VERSION = '0.0.1';
+	const VERSION = '1.0.0';
 
 	/**
 	 * client configuration
@@ -106,7 +106,7 @@ class Api implements ApiInterface
 	{
 		$request = $this->client->createRequest(
 			$command->method(),
-			$command->uri($this->cryptographyEngine),
+			$this->client->getBaseUrl() . $command->uri($this->cryptographyEngine),
 			$this->headers($command->apiVersion(), $command->format(), $command->headers()),
 			$command->body($this->cryptographyEngine)
 		);
