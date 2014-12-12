@@ -14,7 +14,7 @@ class LogCommandResponse extends CommandResponse
 	 *
 	 * @return string
 	 */
-	function toString()
+	public function toString()
 	{
 		return sprintf('Action %s logged', $this->decoded()->data->action);
 	}

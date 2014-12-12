@@ -14,7 +14,7 @@ class ActionsCommandResponse extends CommandResponse
 	 *
 	 * @return string
 	 */
-	function toString()
+	public function toString()
 	{
 		$data = $this->decoded()->data;
 		$meta = $this->decoded()->meta;
