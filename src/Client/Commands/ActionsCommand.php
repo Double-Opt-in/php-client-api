@@ -64,6 +64,10 @@ class ActionsCommand extends Command
 	/**
 	 * returns query parameter
 	 *
+	 * hash: email will be hashed before requesting the server
+	 * action: optional action will be transmitted in plain text
+	 * scope: optional scope will be transmitted in plain text
+	 *
 	 * @param CryptographyEngine $cryptographyEngine
 	 *
 	 * @return string
@@ -88,7 +92,7 @@ class ActionsCommand extends Command
 	}
 
 	/**
-	 * returns the body
+	 * returns an empty body
 	 *
 	 * @param CryptographyEngine $cryptographyEngine
 	 *
