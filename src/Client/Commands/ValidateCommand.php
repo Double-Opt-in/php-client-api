@@ -52,10 +52,33 @@ class ValidateCommand extends Command
 	}
 
 	/**
-	 * returns the body
+	 * returns query parameter
 	 *
 	 * hash: email will be hashed before requesting the server
 	 * scope: optional scope will be transmitted in plain text
+	 *
+	 * @param CryptographyEngine $cryptographyEngine
+	 *
+	 * @return string
+	 */
+	public function uri(CryptographyEngine $cryptographyEngine)
+	{
+		$uri = parent::uri($cryptographyEngine);
+
+		$params = array(
+			'hash' => $cryptographyEngine->hash($this->email),
+		);
+
+		if (null !== $this->scope)
+			$params['scope'] = $this->scope;
+
+		$query = http_build_query($params);
+
+		return $uri . (empty($query) ? '' : '?' . $query);
+	}
+
+	/**
+	 * returns an empty body
 	 *
 	 * @param CryptographyEngine $cryptographyEngine
 	 *
@@ -63,14 +86,7 @@ class ValidateCommand extends Command
 	 */
 	public function body(CryptographyEngine $cryptographyEngine)
 	{
-		$body = array(
-			'hash' => $cryptographyEngine->hash($this->email),
-		);
-
-		if ( ! empty($this->scope))
-			$body['scope'] = $this->scope;
-
-		return json_encode($body);
+		return null;
 	}
 
 	/**
