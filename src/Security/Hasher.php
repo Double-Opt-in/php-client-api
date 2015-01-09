@@ -99,12 +99,11 @@ class Hasher
 	 * returns a key of defined size
 	 *
 	 * @param string $email
-	 * @param int $keySize
 	 *
 	 * @return string
 	 */
-	public function key($email, $keySize)
+	public function key($email)
 	{
-		return substr($email . $this->salt, 0, $keySize);
+		return $email . $this->salt;
 	}
 }
