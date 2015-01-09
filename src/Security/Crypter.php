@@ -1,69 +1,92 @@
 <?php namespace DoubleOptIn\ClientApi\Security;
 
-use DoubleOptIn\ClientApi\Exceptions\KeyTooLongException;
+use DoubleOptIn\ClientApi\Security\SlowAES\AES;
+use DoubleOptIn\ClientApi\Security\SlowAES\cryptoHelpers;
 
 /**
  * Class Crypter
  *
- * Encrypts a message
+ * Encrypts and decrypts a message, using SlowAES
  *
  * @package DoubleOptIn\ClientApi\Security
  */
 class Crypter
 {
+	const IDENTIFIER = 'slowaes';
+	const SEPARATOR_ALGORITHM = ':';
+	const SEPARATOR_CRYPTO_PARTS = ' ';
+
 	/**
-	 * crypts the given text with a key
+	 * encrypts the given plain text with a key
 	 *
-	 * @param string $text
+	 * @param string $plaintext
 	 * @param string $key
 	 *
-	 * @throws KeyTooLongException
 	 * @return string
 	 */
-	public function crypt($text, $key)
+	public function encrypt($plaintext, $key)
 	{
-		$td = mcrypt_module_open(MCRYPT_TWOFISH, '', MCRYPT_MODE_ECB, '');
-		$this->verifyKeyLength($td, $key);
+		// Set up encryption parameters.
+		$inputData = cryptoHelpers::convertStringToByteArray($plaintext);
+		$keyAsNumbers = cryptoHelpers::toNumbers(bin2hex($key));
+		$keyLength = count($keyAsNumbers);
+		$iv = cryptoHelpers::generateSharedKey(16);
 
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
-		mcrypt_generic_init($td, $key, $iv);
-		$encrypted = mcrypt_generic($td, $text);
-		mcrypt_generic_deinit($td);
-		mcrypt_module_close($td);
+		$encrypted = AES::encrypt(
+			$inputData,
+			AES::modeOfOperation_CBC,
+			$keyAsNumbers,
+			$keyLength,
+			$iv
+		);
 
-		return $encrypted;
+		$retVal = $encrypted['originalsize'] . self::SEPARATOR_CRYPTO_PARTS
+			. cryptoHelpers::toHex($iv) . self::SEPARATOR_CRYPTO_PARTS
+			. cryptoHelpers::toHex($encrypted['cipher']);
+
+		return self::IDENTIFIER . self::SEPARATOR_ALGORITHM . $retVal;
 	}
 
 	/**
-	 * returns the key size available
+	 * decrypts a message
 	 *
-	 * @return int
-	 */
-	public function getKeySize()
-	{
-		$td = mcrypt_module_open(MCRYPT_TWOFISH, '', MCRYPT_MODE_ECB, '');
-		$keySize = mcrypt_enc_get_key_size($td);
-		mcrypt_module_close($td);
-
-		return $keySize;
-	}
-
-	/**
-	 * verifies the possible key length
-	 *
-	 * @param resource $mcryptResource
+	 * @param string $encrypted
 	 * @param string $key
 	 *
-	 * @throws KeyTooLongException
+	 * @return string
+	 * @throws \Exception
 	 */
-	private function verifyKeyLength($mcryptResource, $key)
+	public function decrypt($encrypted, $key)
 	{
-		$keyLength = strlen($key);
-		$maxLength = mcrypt_enc_get_key_size($mcryptResource);
+		list($identifier, $input) = explode(self::SEPARATOR_ALGORITHM, $encrypted, 2);
 
-		if ($keyLength > $maxLength) {
-			mcrypt_module_close($mcryptResource);
-			throw new KeyTooLongException('Given key exceeds the allowed size of ' . $maxLength);
-		}
+		if ($identifier !== self::IDENTIFIER)
+			throw new \Exception('Encryption can not be decrypted. Unsupported identifier: ' . $identifier);
+
+		// Split the input into its parts
+		$cipherSplit = explode(self::SEPARATOR_CRYPTO_PARTS, $input);
+		$originalSize = intval($cipherSplit[0]);
+		$iv = cryptoHelpers::toNumbers($cipherSplit[1]);
+		$cipherText = $cipherSplit[2];
+
+		// Set up encryption parameters
+		$cipherIn = cryptoHelpers::toNumbers($cipherText);
+		$keyAsNumbers = cryptoHelpers::toNumbers(bin2hex($key));
+		$keyLength = count($keyAsNumbers);
+
+		$decrypted = AES::decrypt(
+			$cipherIn,
+			$originalSize,
+			AES::modeOfOperation_CBC,
+			$keyAsNumbers,
+			$keyLength,
+			$iv
+		);
+
+		// Byte-array to text.
+		$hexDecrypted = cryptoHelpers::toHex($decrypted);
+		$retVal = pack("H*", $hexDecrypted);
+
+		return $retVal;
 	}
 }

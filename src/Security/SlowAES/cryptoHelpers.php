@@ -1,5 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Security\SlowAES;
 
+use Exception;
+
 /**
  * Class cryptoHelpers
  *
@@ -68,7 +70,7 @@ class cryptoHelpers
 
 	public static function generatePrivateKey($s,$size){
 		if(function_exists('mhash') && defined('MHASH_SHA256')){
-			return convertStringToByteArray(substr(mhash(MHASH_SHA256, $s), 0, $size));
+			return self::convertStringToByteArray(substr(mhash(MHASH_SHA256, $s), 0, $size));
 		}else{
 			throw new Exception('cryptoHelpers::generatePrivateKey currently requires mhash');
 		}

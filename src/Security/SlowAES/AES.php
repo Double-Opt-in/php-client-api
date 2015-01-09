@@ -1,5 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Security\SlowAES;
 
+use Exception;
+
 /**
  * Class AES
  *
@@ -442,7 +444,7 @@ class AES
 	}
 
 	private static function numberOfRounds($size){
-		$nbrRounds;
+		$nbrRounds = 0;
 		switch ($size) /* set the number of rounds */
 		{
 			case self::keySize_128:
