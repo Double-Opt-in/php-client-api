@@ -2,6 +2,7 @@
 
 use DoubleOptIn\ClientApi\Security\SlowAES\AES;
 use DoubleOptIn\ClientApi\Security\SlowAES\cryptoHelpers;
+use Exception;
 
 /**
  * Class Crypter
@@ -54,14 +55,14 @@ class Crypter
 	 * @param string $key
 	 *
 	 * @return string
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function decrypt($encrypted, $key)
 	{
 		list($identifier, $input) = explode(self::SEPARATOR_ALGORITHM, $encrypted, 2);
 
 		if ($identifier !== self::IDENTIFIER)
-			throw new \Exception('Encryption can not be decrypted. Unsupported identifier: ' . $identifier);
+			throw new Exception('Encryption can not be decrypted. Unsupported identifier: ' . $identifier);
 
 		// Split the input into its parts
 		$cipherSplit = explode(self::SEPARATOR_CRYPTO_PARTS, $input);

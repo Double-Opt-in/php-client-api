@@ -104,6 +104,6 @@ class Hasher
 	 */
 	public function key($email)
 	{
-		return $email . $this->salt;
+		return $this->hash($email . $this->salt);
 	}
 }

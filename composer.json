@@ -15,11 +15,17 @@
 		"commerceguys/guzzle-oauth2-plugin": "~1.0"
 	},
 	"require-dev": {
-		"guzzle/guzzle": "~3.9"
+		"guzzle/guzzle": "~3.9",
+		"phpunit/phpunit": "*"
 	},
 	"autoload": {
 		"psr-4": {
 			"DoubleOptIn\\ClientApi\\": "src"
 		}
+	},
+	"autoload-dev": {
+		"files": [
+			"tests/TestCase.php"
+		]
 	}
 }
