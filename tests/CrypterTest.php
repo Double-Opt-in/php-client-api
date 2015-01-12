@@ -50,4 +50,24 @@ class CrypterTest extends TestCase
 		$resolvedMessage = $crypter->decrypt($data, $key);
 		$this->assertEquals($this->plaintextMessage, $resolvedMessage);
 	}
+
+	/** @test */
+	public function it_does_not_fail_on_empty_message_for_decryption()
+	{
+		$crypter = new Crypter();
+		$hasher = new Hasher($this->siteToken);
+
+		$this->assertEmpty($crypter->decrypt('', $hasher->key($this->email)));
+		$this->assertEmpty($crypter->decrypt(null, $hasher->key($this->email)));
+	}
+
+	/** @test */
+	public function it_does_not_fail_on_empty_message_for_encryption()
+	{
+		$crypter = new Crypter();
+		$hasher = new Hasher($this->siteToken);
+
+		$this->assertNotEmpty($crypter->encrypt('', $hasher->key($this->email)));
+		$this->assertNotEmpty($crypter->encrypt(null, $hasher->key($this->email)));
+	}
 }

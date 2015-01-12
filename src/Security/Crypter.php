@@ -59,6 +59,9 @@ class Crypter
 	 */
 	public function decrypt($encrypted, $key)
 	{
+		if (empty($encrypted))
+			return null;
+
 		list($identifier, $input) = explode(self::SEPARATOR_ALGORITHM, $encrypted, 2);
 
 		if ($identifier !== self::IDENTIFIER)
