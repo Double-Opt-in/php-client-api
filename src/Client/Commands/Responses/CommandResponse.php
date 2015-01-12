@@ -12,7 +12,7 @@ use stdClass;
  *
  * @package DoubleOptIn\ClientApi\Client\Commands\Responses
  */
-abstract class CommandResponse
+class CommandResponse
 {
 	/**
 	 * original response
@@ -123,25 +123,52 @@ abstract class CommandResponse
 	{
 		$result = array();
 
-		$data = $this->decoded()->data;
+		$data = $this->data();
 		if ( ! is_array($data))
 			$data = array($data);
 
 		foreach ($data as $entry)
 		{
-			$result[] = new Action($entry->hash, $entry->scope, $entry->action, $entry->data, $entry->ip, $entry->useragent, $entry->created_at);
+			$result[] = Action::createFromStdClass($entry);
 		}
 
 		return $result;
 	}
 
+	/**
+	 * returns the action or null
+	 *
+	 * @return Action|null
+	 */
+	public function action()
+	{
+		$action = $this->data();
+
+		if (is_array($action))
+			return null;
+
+		return Action::createFromStdClass($action);
+	}
 
 	/**
-	 * returns a string representation of the response, command-dependent
+	 * returns decoded data
 	 *
-	 * @return string
+	 * @return array|\stdClass
 	 */
-	abstract function toString();
+	public function data()
+	{
+		return $this->decoded()->data;
+	}
+
+	/**
+	 * returns decoded meta data
+	 *
+	 * @return array
+	 */
+	public function meta()
+	{
+		return $this->decoded()->meta;
+	}
 
 	/**
 	 * resolves all known attributes

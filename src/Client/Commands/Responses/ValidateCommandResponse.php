@@ -21,14 +21,4 @@ class ValidateCommandResponse extends CommandResponse
 
 		return parent::errorMessage();
 	}
-
-	/**
-	 * returns a string representation of the response, command-dependent
-	 *
-	 * @return string
-	 */
-	function toString()
-	{
-		return sprintf('User is in state %s', $this->decoded()->data->state);
-	}
 }
