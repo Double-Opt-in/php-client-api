@@ -1,7 +1,6 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
 use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
-use DoubleOptIn\ClientApi\Client\Commands\Responses\ValidateCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
 
@@ -115,7 +114,7 @@ abstract class Command implements ClientCommand
 	 *
 	 * @param Response $response
 	 *
-	 * @return CommandResponse|ValidateCommandResponse
+	 * @return CommandResponse
 	 */
 	abstract public function response(Response $response);
 }

@@ -1,6 +1,6 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
-use DoubleOptIn\ClientApi\Client\Commands\Responses\ValidateCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
 
@@ -94,10 +94,10 @@ class ValidateCommand extends Command
 	 *
 	 * @param Response $response
 	 *
-	 * @return ValidateCommandResponse
+	 * @return CommandResponse
 	 */
 	public function response(Response $response)
 	{
-		return new ValidateCommandResponse($response);
+		return new CommandResponse($response);
 	}
 }
