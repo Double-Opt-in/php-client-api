@@ -56,11 +56,12 @@ Sending the command and retrieving the actions:
 
 The response has a `data` part and a `meta` part. You can access them like so:
 
-	$data = $response->decoded()->data;
-	$meta = $response->decoded()->meta;
+	$data = $response->data();
+	$meta = $response->meta();
+	$actions = $response->all();
 
 Data has an array of entries with the actions content. You have an example at
- [ActionsCommandResponse::toString()](/Double-Opt-in/php-client-api/blob/master/src/Client/Commands/Responses/ActionsCommandResponse.php).
+ [CommandResponse::all()](/Double-Opt-in/php-client-api/blob/master/src/Client/Commands/Responses/CommandResponse.php).
 
 Meta has a pagination object for going to the next result pages.
 
@@ -78,6 +79,7 @@ The LogCommand will be used to log an action for an email.
 Sending the command to the api service:
 
 	$response = $client->send($logCommand);
+	$action = $resonse->action();
 
 You can set almost every word or action name you want. There are special names set to the site as actions workflow. 
  These actions control the state of an user. This is the action state you have to validate before sending him an email.
@@ -102,7 +104,7 @@ The ValidateCommand is for validating a user before sending him an email.
 Sending the command to the api service:
 
 	$response = $client->send($validateCommand);
-	$action = $response->decoded()->data->action;
+	$action = $response->action();
 
 In `$action` is the most-recent action from the actions workflow. So not the most-recent action at all, only the action
  from the workflow. By default one of the `register`, `confirm` or `blacklist`.
