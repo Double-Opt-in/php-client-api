@@ -116,9 +116,7 @@ class LogCommand extends Command
 			$body['scope'] = $this->scope;
 
 		if ( ! empty($this->data))
-			$body['data'] = base64_encode(
-				$cryptographyEngine->encrypt(json_encode($this->data), $this->email)
-			);
+			$body['data'] = $cryptographyEngine->encrypt(json_encode($this->data), $this->email);
 
 		return json_encode($body);
 	}
