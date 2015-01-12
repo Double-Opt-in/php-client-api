@@ -1,6 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands\Responses\Models;
 
 use DateTime;
+use stdClass;
 
 /**
  * Class Action
@@ -77,6 +78,26 @@ class Action
 		$this->useragent = $useragent;
 
 		$this->setCreatedAt($createdAt);
+	}
+
+	/**
+	 * creates from a stdClass
+	 *
+	 * @param stdClass $class
+	 *
+	 * @return \DoubleOptIn\ClientApi\Client\Commands\Responses\Models\Action
+	 */
+	public static function createFromStdClass(stdClass $class)
+	{
+		$hash = isset($class->hash) ? $class->hash : null;
+		$scope = isset($class->scope) ? $class->scope : null;
+		$action = isset($class->action) ? $class->action : null;
+		$data = isset($class->data) ? $class->data : null;
+		$ip = isset($class->ip) ? $class->ip : null;
+		$useragent = isset($class->useragent) ? $class->useragent : null;
+		$createdAt = isset($class->created_at) ? $class->created_at : null;
+
+		return new Action($hash, $scope, $action, $data, $ip, $useragent, $createdAt);
 	}
 
 	/**
