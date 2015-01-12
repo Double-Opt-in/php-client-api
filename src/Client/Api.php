@@ -62,6 +62,16 @@ class Api implements ApiInterface
 	}
 
 	/**
+	 * returns CryptographyEngine
+	 *
+	 * @return CryptographyEngine
+	 */
+	public function getCryptographyEngine()
+	{
+		return $this->cryptographyEngine;
+	}
+
+	/**
 	 * resolves a http client
 	 *
 	 * @param ClientInterface|null $client
