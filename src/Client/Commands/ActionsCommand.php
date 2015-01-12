@@ -1,6 +1,5 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
-use DoubleOptIn\ClientApi\Client\Commands\Responses\ActionsCommandResponse;
 use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
@@ -112,6 +111,6 @@ class ActionsCommand extends Command
 	 */
 	public function response(Response $response)
 	{
-		return new ActionsCommandResponse($response);
+		return new CommandResponse($response);
 	}
 }

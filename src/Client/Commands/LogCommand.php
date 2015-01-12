@@ -1,6 +1,6 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
-use DoubleOptIn\ClientApi\Client\Commands\Responses\LogCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
 
@@ -81,6 +81,7 @@ class LogCommand extends Command
 	{
 		if (is_array($data) && $key === null) {
 			$this->data = $data;
+
 			return $this;
 		}
 
@@ -127,10 +128,10 @@ class LogCommand extends Command
 	 *
 	 * @param Response $response
 	 *
-	 * @return LogCommandResponse
+	 * @return CommandResponse
 	 */
 	public function response(Response $response)
 	{
-		return new LogCommandResponse($response);
+		return new CommandResponse($response);
 	}
 }
