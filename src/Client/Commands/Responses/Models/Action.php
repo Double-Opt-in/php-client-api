@@ -39,6 +39,13 @@ class Action
 	private $data;
 
 	/**
+	 * state
+	 *
+	 * @var string
+	 */
+	private $state;
+
+	/**
 	 * ip
 	 *
 	 * @var string
@@ -64,15 +71,17 @@ class Action
 	 * @param string $scope
 	 * @param string $action
 	 * @param string $data
+	 * @param string $state
 	 * @param string $ip
 	 * @param string $useragent
 	 * @param string|DateTime $createdAt
 	 */
-	public function __construct($hash, $scope, $action, $data, $ip, $useragent, $createdAt)
+	public function __construct($hash, $scope, $action, $data, $state, $ip, $useragent, $createdAt)
 	{
 		$this->hash = $hash;
 		$this->scope = $scope;
 		$this->action = $action;
+		$this->state = $state;
 		$this->data = $data;
 		$this->ip = $ip;
 		$this->useragent = $useragent;
@@ -93,11 +102,12 @@ class Action
 		$scope = isset($class->scope) ? $class->scope : null;
 		$action = isset($class->action) ? $class->action : null;
 		$data = isset($class->data) ? $class->data : null;
+		$state = isset($class->state) ? $class->state : null;
 		$ip = isset($class->ip) ? $class->ip : null;
 		$useragent = isset($class->useragent) ? $class->useragent : null;
 		$createdAt = isset($class->created_at) ? $class->created_at : null;
 
-		return new Action($hash, $scope, $action, $data, $ip, $useragent, $createdAt);
+		return new Action($hash, $scope, $action, $data, $state, $ip, $useragent, $createdAt);
 	}
 
 	/**
@@ -185,5 +195,15 @@ class Action
 		$this->createdAt = $createdAt;
 
 		return $this;
+	}
+
+	/**
+	 * returns State
+	 *
+	 * @return string
+	 */
+	public function getState()
+	{
+		return $this->state;
 	}
 }
