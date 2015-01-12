@@ -93,7 +93,11 @@ class CommandResponse
 			throw new \RuntimeException('No result from server.');
 		}
 
-		$message = sprintf('%s (%s)', $this->decoded()->message, $this->statusCode());
+		$decoded = $this->decoded();
+		if (isset($decoded->error))
+			return sprintf('%s (%s)', $decoded->error->message, $decoded->error->code);
+
+		$message = sprintf('%s (%s)', $decoded->message, $this->statusCode());
 
 		if (isset($this->decoded()->errors)) {
 			$errors = $this->decoded()->errors;
