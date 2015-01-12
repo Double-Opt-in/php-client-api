@@ -2,6 +2,7 @@
 
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
 use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 
 /**
  * Interface ApiInterface
@@ -20,4 +21,11 @@ interface ApiInterface
 	 * @return CommandResponse
 	 */
 	public function send(ClientCommand $command);
+
+	/**
+	 * returns CryptographyEngine
+	 *
+	 * @return CryptographyEngine
+	 */
+	public function getCryptographyEngine();
 }
