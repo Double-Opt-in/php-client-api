@@ -1,6 +1,7 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands\Responses;
 
 use DoubleOptIn\ClientApi\Client\Commands\Responses\Limiter\RateLimit;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\Models\Action;
 use Guzzle\Http\Message\Response;
 use stdClass;
 
@@ -112,6 +113,28 @@ abstract class CommandResponse
 	{
 		return $this->response->getStatusCode();
 	}
+
+	/**
+	 * returns a list of all actions
+	 *
+	 * @return array|Action[]
+	 */
+	public function all()
+	{
+		$result = array();
+
+		$data = $this->decoded()->data;
+		if ( ! is_array($data))
+			$data = array($data);
+
+		foreach ($data as $entry)
+		{
+			$result[] = new Action($entry->hash, $entry->scope, $entry->action, $entry->data, $entry->ip, $entry->useragent, $entry->created_at);
+		}
+
+		return $result;
+	}
+
 
 	/**
 	 * returns a string representation of the response, command-dependent

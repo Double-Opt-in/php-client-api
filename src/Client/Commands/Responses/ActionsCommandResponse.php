@@ -16,15 +16,16 @@ class ActionsCommandResponse extends CommandResponse
 	 */
 	public function toString()
 	{
-		$data = $this->decoded()->data;
 		$meta = $this->decoded()->meta;
 
-		$message = 'created at               | action (scope)' . PHP_EOL
-			. '-------------------------+-------------------------';
+		$message =
+			  'created at               | action (scope)          | data' . PHP_EOL
+			. '-------------------------+-------------------------+-------------------------';
 
-		foreach ($data as $entry) {
-			$scope = ( ! empty($entry->scope)) ? ' (' . $entry->scope . ')' : '';
-			$message .= PHP_EOL . sprintf('%s | %s%s', $entry->created_at, $entry->action, $scope);
+		foreach ($this->all() as $entry) {
+			$scope = $entry->getScope();
+			$scope = empty($scope) ? '' : ' (' . $$scope . ')';
+			$message .= PHP_EOL . sprintf('%s | %s%s', $entry->getCreatedAt()->format('Y-m-d H:i:s'), $entry->getAction(), $scope);
 		}
 
 		$message .= PHP_EOL . PHP_EOL . sprintf('%s of %s | page %s of %s | %s entries per page',
