@@ -18,7 +18,7 @@ class ValidateCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $method = 'POST';
+	protected $method = 'GET';
 
 	/**
 	 * path to the endpoint
