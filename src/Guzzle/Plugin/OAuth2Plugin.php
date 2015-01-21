@@ -23,9 +23,11 @@ class OAuth2Plugin extends \CommerceGuys\Guzzle\Plugin\Oauth2\Oauth2Plugin
 	 */
 	public function setCache($file)
 	{
-		$this->cache = new AccessTokenCache($file);
+		if ( ! empty($file)) {
+			$this->cache = new AccessTokenCache($file);
 
-		$this->setAccessToken($this->cache->get());
+			$this->setAccessToken($this->cache->get());
+		}
 	}
 
 	/**
