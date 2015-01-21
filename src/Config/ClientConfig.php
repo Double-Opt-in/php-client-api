@@ -38,12 +38,20 @@ class ClientConfig
 	private $siteToken;
 
 	/**
+	 * http client config
+	 *
+	 * @var array
+	 */
+	private $httpClientConfig;
+
+	/**
 	 * @param string $clientId
 	 * @param string $clientSecret
 	 * @param string $siteToken
 	 * @param string|null $baseUrl
+	 * @param array $httpClientConfig
 	 */
-	public function __construct($clientId, $clientSecret, $siteToken, $baseUrl = null)
+	public function __construct($clientId, $clientSecret, $siteToken, $baseUrl = null, array $httpClientConfig = array())
 	{
 		$this->clientId = $clientId;
 		$this->clientSecret = $clientSecret;
@@ -51,6 +59,8 @@ class ClientConfig
 
 		if (null !== $baseUrl)
 			Properties::setBaseUrl($baseUrl);
+
+		$this->httpClientConfig = $httpClientConfig;
 	}
 
 	/**
@@ -118,5 +128,15 @@ class ClientConfig
 		$this->accessTokenCacheFile = $accessTokenCacheFile;
 
 		return $this;
+	}
+
+	/**
+	 * returns an array of client configuration for the http client
+	 *
+	 * @return array
+	 */
+	public function getHttpClientConfig()
+	{
+		return $this->httpClientConfig;
 	}
 }
