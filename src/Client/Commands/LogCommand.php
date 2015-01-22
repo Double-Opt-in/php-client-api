@@ -56,6 +56,27 @@ class LogCommand extends Command
 	private $data;
 
 	/**
+	 * overwriting ip
+	 *
+	 * @var string|null
+	 */
+	private $ip;
+
+	/**
+	 * overwriting useragent
+	 *
+	 * @var string|null
+	 */
+	private $useragent;
+
+	/**
+	 * overwriting created_at
+	 *
+	 * @var string|null
+	 */
+	private $created_at;
+
+	/**
 	 * @param string $email
 	 * @param string $action
 	 * @param string|null $scope
@@ -118,6 +139,16 @@ class LogCommand extends Command
 		if ( ! empty($this->data))
 			$body['data'] = $cryptographyEngine->encrypt(json_encode($this->data), $this->email);
 
+		//  add overwriting data when possible
+		if ( ! empty($this->ip))
+			$body['ip'] = $this->ip;
+
+		if ( ! empty($this->useragent))
+			$body['useragent'] = $this->useragent;
+
+		if ( ! empty($this->created_at))
+			$body['created_at'] = $this->created_at;
+
 		return json_encode($body);
 	}
 
@@ -131,5 +162,61 @@ class LogCommand extends Command
 	public function response(Response $response)
 	{
 		return new CommandResponse($response);
+	}
+
+	/**
+	 * sets ip
+	 *
+	 * @param null|string $ip
+	 *
+	 * @return $this
+	 * @throws \InvalidArgumentException when ip validation failed
+	 */
+	public function setIp($ip)
+	{
+		if (null !== $ip) {
+			if ( ! filter_var($ip, FILTER_VALIDATE_IP))
+				throw new \InvalidArgumentException('Parameter ip is not a valid ip');
+		}
+
+		$this->ip = $ip;
+
+		return $this;
+	}
+
+	/**
+	 * sets useragent
+	 *
+	 * @param null|string $useragent
+	 *
+	 * @return $this
+	 */
+	public function setUseragent($useragent)
+	{
+		$this->useragent = $useragent;
+
+		return $this;
+	}
+
+	/**
+	 * sets created_at
+	 *
+	 * @param null|string|\DateTime $created_at
+	 *
+	 * @return $this
+	 * @throws \InvalidArgumentException when date validation failed
+	 */
+	public function setCreatedAt($created_at)
+	{
+		if (null !== $created_at) {
+			if ($created_at instanceof \DateTime)
+				$created_at = $created_at->format('Y-m-d H:i:s');
+			elseif ( ! strtotime($created_at))
+				throw new \InvalidArgumentException('Parameter created_at is not a valid date string');
+		}
+
+		$this->created_at = $created_at;
+
+		return $this;
 	}
 }

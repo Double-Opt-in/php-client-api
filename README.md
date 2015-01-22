@@ -11,7 +11,7 @@ The PHP client api for Double Opt-in lets you integrate the double-opt.in servic
 Add to your composer.json following lines
 
 	"require": {
-		"double-opt-in/php-client-api": "~1.1.3"
+		"double-opt-in/php-client-api": "~1.2.0"
 	}
 
 ## Usage
@@ -48,7 +48,7 @@ Basically we can log an action for email, retrieve all actions for email and val
 The ActionsCommand retrieves all actions stored for an email.
 
 	$email = 'email-to@look.at';
-	$actionsCommand = new DoubleOptIn\ClientApi\Client\Commands\ActionsCommand($email);
+	$actionsCommand = new DoubleOptIn\ClientApi\Client\Commands\ActionsCommand($email[, $action[, $scope]]);
 
 Sending the command and retrieving the actions:
 
@@ -74,7 +74,13 @@ The LogCommand will be used to log an action for an email.
 
 	$email = 'email-to@log.now';
 	$action = 'register';
-	$logCommand = new DoubleOptIn\ClientApi\Client\Commands\LogCommand($email, $action);
+	$logCommand = new DoubleOptIn\ClientApi\Client\Commands\LogCommand($email, $action[, $scope]);
+
+Optional you can force the necessary attributes `ip`, `useragent` and `created_at` by using this methods:
+
+	$logCommand->setIp('127.0.0.1');
+	$logCommand->setUseragent('My own useragent/1.0');
+	$logCommand->setCreatedAt('2014-12-13 12:34:56');// or use a \DateTime instance
 
 Sending the command to the api service:
 
@@ -95,7 +101,7 @@ As a result you get the entry created right now.
 The ValidateCommand is for validating a user before sending him an email.
 
 	$email = 'email-to@validate.at';
-	$validateCommand = new DoubleOptIn\ClientApi\Client\Commands\ValidateCommand($email);
+	$validateCommand = new DoubleOptIn\ClientApi\Client\Commands\ValidateCommand($email[, $scope]);
 
 > You can validate an email globally or for a defined scope. But with hashed and encrypted data, we can only return data, 
 > which is in our database. So if you have logged an email with action and scope, you only can validate by adding the 
