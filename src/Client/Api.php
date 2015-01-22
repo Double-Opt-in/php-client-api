@@ -87,6 +87,13 @@ class Api implements ApiInterface
 		$client->setBaseUrl(Properties::baseUrl())
 			->setUserAgent('Double Opt-in php-api/' . self::VERSION);
 
+		$httpClientConfig = $this->config->getHttpClientConfig();
+		if (array_key_exists('verify', $httpClientConfig)
+			&& $httpClientConfig['verify'] === false)
+		{
+			$client->setSslVerification(false, false);
+		}
+
 		return $client;
 	}
 
