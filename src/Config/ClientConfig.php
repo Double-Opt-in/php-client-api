@@ -139,4 +139,18 @@ class ClientConfig
 	{
 		return $this->httpClientConfig;
 	}
+
+	/**
+	 * sets httpClientConfig
+	 *
+	 * @param array $httpClientConfig
+	 *
+	 * @return $this
+	 */
+	public function setHttpClientConfig($httpClientConfig)
+	{
+		$this->httpClientConfig = $httpClientConfig;
+
+		return $this;
+	}
 }
