@@ -17,7 +17,7 @@ Add to your composer.json following lines
 ## Usage
 
 For a running example you can take a look at the 
- [double-opt-in/cli-client-php](/Double-Opt-in/cli-client-php) package.
+ [double-opt-in/cli-client-php](https://github.com/Double-Opt-in/cli-client-php) package.
 
 In general you will need the client for communication and a command for sending your business command.
 
