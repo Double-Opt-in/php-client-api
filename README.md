@@ -85,7 +85,7 @@ Optional you can force the necessary attributes `ip`, `useragent` and `created_a
 Sending the command to the api service:
 
 	$response = $client->send($logCommand);
-	$action = $resonse->action();
+	$action = $response->action();
 
 You can set almost every word or action name you want. There are special names set to the site as actions workflow. 
  These actions control the state of an user. This is the action state you have to validate before sending him an email.
