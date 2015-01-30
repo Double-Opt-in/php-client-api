@@ -133,7 +133,7 @@ class CommandResponse
 
 		foreach ($data as $entry)
 		{
-			$result[] = Action::createFromStdClass($entry);
+			$result[] = $this->resolveActionFromStdClass($entry);
 		}
 
 		return $result;
@@ -151,7 +151,19 @@ class CommandResponse
 		if (is_array($action))
 			return null;
 
-		return Action::createFromStdClass($action);
+		return $this->resolveActionFromStdClass($action);
+	}
+
+	/**
+	 * resolves an action from a stdClass
+	 *
+	 * @param \stdClass $stdClass
+	 *
+	 * @return Action
+	 */
+	protected function resolveActionFromStdClass(stdClass $stdClass)
+	{
+		return Action::createFromStdClass($stdClass);
 	}
 
 	/**

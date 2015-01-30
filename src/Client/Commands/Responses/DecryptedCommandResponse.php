@@ -1,6 +1,8 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands\Responses;
 
+use DoubleOptIn\ClientApi\Client\Commands\Responses\Models\Action;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
+use stdClass;
 
 /**
  * Class DecryptedCommandResponse
@@ -9,8 +11,22 @@ use DoubleOptIn\ClientApi\Security\CryptographyEngine;
  *
  * @package DoubleOptIn\ClientApi\Client\Commands\Responses
  */
-class DecryptedCommandResponse extends CommandResponse
+final class DecryptedCommandResponse extends CommandResponse
 {
+	/**
+	 * cryptography engine
+	 *
+	 * @var CryptographyEngine
+	 */
+	private $cryptographyEngine;
+
+	/**
+	 * email to decrypt
+	 *
+	 * @var string
+	 */
+	private $email;
+
 	/**
 	 * assigns the cryptography engine
 	 *
@@ -21,6 +37,22 @@ class DecryptedCommandResponse extends CommandResponse
 	 */
 	public function assignCryptographyEngine(CryptographyEngine $cryptographyEngine, $email)
 	{
-		$this->decoded()->data = $cryptographyEngine->decrypt($this->decoded()->data, $email);
+		$this->cryptographyEngine = $cryptographyEngine;
+		$this->email = $email;
+	}
+
+	/**
+	 * resolves an action from a stdClass
+	 *
+	 * @param \stdClass $stdClass
+	 *
+	 * @return Action
+	 */
+	protected function resolveActionFromStdClass(stdClass $stdClass)
+	{
+		if (isset($stdClass->data))
+			$stdClass->data = $this->cryptographyEngine->decrypt($stdClass->data, $this->email);
+
+		return Action::createFromStdClass($stdClass);
 	}
 }
