@@ -113,8 +113,9 @@ abstract class Command implements ClientCommand
 	 * creates a response from http response
 	 *
 	 * @param Response $response
+	 * @param \DoubleOptIn\ClientApi\Security\CryptographyEngine $cryptographyEngine
 	 *
-	 * @return CommandResponse
+	 * @return \DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse
 	 */
-	abstract public function response(Response $response);
+	abstract public function response(Response $response, CryptographyEngine $cryptographyEngine);
 }

@@ -1,6 +1,6 @@
 <?php namespace DoubleOptIn\ClientApi\Client\Commands;
 
-use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\DecryptedCommandResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 use Guzzle\Http\Message\Response;
 
@@ -106,11 +106,16 @@ class ActionsCommand extends Command
 	 * creates a response from http response
 	 *
 	 * @param Response $response
+	 * @param CryptographyEngine $cryptographyEngine
 	 *
-	 * @return CommandResponse
+	 * @return DecryptedCommandResponse
 	 */
-	public function response(Response $response)
+	public function response(Response $response, CryptographyEngine $cryptographyEngine)
 	{
-		return new CommandResponse($response);
+		$decryptedResponse = new DecryptedCommandResponse($response);
+
+		$decryptedResponse->assignCryptographyEngine($cryptographyEngine, $this->email);
+
+		return $decryptedResponse;
 	}
 }

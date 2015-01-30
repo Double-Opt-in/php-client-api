@@ -93,10 +93,11 @@ class ValidateCommand extends Command
 	 * creates a response from http response
 	 *
 	 * @param Response $response
+	 * @param CryptographyEngine $cryptographyEngine
 	 *
 	 * @return CommandResponse
 	 */
-	public function response(Response $response)
+	public function response(Response $response, CryptographyEngine $cryptographyEngine)
 	{
 		return new CommandResponse($response);
 	}

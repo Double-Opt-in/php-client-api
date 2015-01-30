@@ -137,7 +137,7 @@ class Api implements ApiInterface
 			$response = $exception->getResponse();
 		}
 
-		return $command->response($response);
+		return $command->response($response, $this->cryptographyEngine);
 	}
 
 	/**
