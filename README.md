@@ -11,7 +11,7 @@ The PHP client api for Double Opt-in lets you integrate the double-opt.in servic
 Add to your composer.json following lines
 
 	"require": {
-		"double-opt-in/php-client-api": "~1.3.1"
+		"double-opt-in/php-client-api": "~1.3.2"
 	}
 
 ## Usage
