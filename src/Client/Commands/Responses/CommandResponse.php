@@ -148,7 +148,7 @@ class CommandResponse
 	{
 		$action = $this->data();
 
-		if (is_array($action))
+		if (! $action instanceof stdClass)
 			return null;
 
 		return $this->resolveActionFromStdClass($action);
