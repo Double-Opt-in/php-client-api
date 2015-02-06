@@ -55,7 +55,7 @@ class ActionsCommand extends Command
 	 */
 	public function __construct($email, $action = null, $scope = null)
 	{
-		$this->email = $email;
+		$this->email = strtolower($email);
 		$this->action = $action;
 		$this->scope = $scope;
 	}

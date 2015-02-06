@@ -47,7 +47,7 @@ class ValidateCommand extends Command
 	 */
 	public function __construct($email, $scope = null)
 	{
-		$this->email = $email;
+		$this->email = strtolower($email);
 		$this->scope = $scope;
 	}
 

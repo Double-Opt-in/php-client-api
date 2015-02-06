@@ -83,7 +83,7 @@ class LogCommand extends Command
 	 */
 	public function __construct($email, $action, $scope = null)
 	{
-		$this->email = $email;
+		$this->email = strtolower($email);
 		$this->action = $action;
 		$this->scope = $scope;
 	}
