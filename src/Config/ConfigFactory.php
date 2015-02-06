@@ -39,7 +39,11 @@ class ConfigFactory
 			? null
 			: $data['api'];
 
-		return new ClientConfig($data['client_id'], $data['client_secret'], $data['site_token'], $baseUrl);
+		$httpClientConfig = ( ! array_key_exists('http_client', $data))
+			? array()
+			: $data['http_client'];
+
+		return new ClientConfig($data['client_id'], $data['client_secret'], $data['site_token'], $baseUrl, $httpClientConfig);
 	}
 
 	/**
