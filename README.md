@@ -11,7 +11,7 @@ The PHP client api for Double Opt-in lets you integrate the double-opt.in servic
 Add to your composer.json following lines
 
 	"require": {
-		"double-opt-in/php-client-api": "~1.3.2"
+		"double-opt-in/php-client-api": "~1.4"
 	}
 
 ## Usage
@@ -30,17 +30,75 @@ In general you will need the client for communication and a command for sending 
 	
 	// this is only one way to get a configuration instance
 	$config = new DoubleOptIn\ClientApi\Config\ClientConfig($clientId, $clientSecret, $siteToken);
+	// bypass ssl verification with the following setting
+	// $config->setHttpClientConfig(['verify' => false]);
 	
 	// this is your api client which handles all requests and responses to the api server
 	$api = new DoubleOptIn\ClientApi\Client\Api($config);
 
 You can also store the configuration values in a file.
 
+#### Alternative ways to configure the client
+
+*Hint*: For the `http_client` configuration values please look to the guzzle configuration values. We use the guzzle http 
+ client internal.
+
+##### 1. Use a file
+
+For using a configuration file you have to use the ConfigFactory: 
+
+	$config = \DoubleOptIn\ClientApi\Config\ConfigFactory::fromFile(__DIR__.'/config.php');
+    $client = new DoubleOptIn\ClientApi\Client\Api($config);
+    
+The file has to have the following content:
+	
+	<?php // config.php
+	return array(
+	    'api' => 'https://www.double-opt.in/api', // optional
+	    'client_id' => 'YOUR_CLIENT_ID',
+	    'client_secret' => 'YOUR_CLIENT_SECRET',
+	    'site_token' => 'YOUR_SITE_TOKEN',
+	    // optional http client configuration values
+	    'http_client' => array(
+	        'verify' => false,
+		),
+	);
+
+
+##### 2. Use an array
+
+For using array configuration you have to use the ConfigFactory as well:
+
+	$config = \DoubleOptIn\ClientApi\Config\ConfigFactory::fromArray($configArray);
+    $client = new DoubleOptIn\ClientApi\Client\Api($config);
+
+You need the following structure for your array:
+
+	$configArray = array(
+    	'api' => 'https://www.double-opt.in/api', // optional
+    	'client_id' => 'YOUR_CLIENT_ID',
+    	'client_secret' => 'YOUR_CLIENT_SECRET',
+    	'site_token' => 'YOUR_SITE_TOKEN',
+    	// optional http client configuration values
+    	'http_client' => array(
+			'verify' => false,
+		),
+	);
+
+##### 3. Instantiate a ClientConfig object
+
+You can also set a configuration instance manually:
+
+	$config = new DoubleOptIn\ClientApi\Config\ClientConfig($clientId, $clientSecret, $siteToken, $apiUrl, $httpClientConfig);
+	$client = new DoubleOptIn\ClientApi\Client\Api($config);
+
+That's it.
+
 
 ### The commands
 
 Basically we can log an action for email, retrieve all actions for email and validate an email. For every single task we
- have a concrete command.
+ have a concrete command. For administrative information you can request the current status too.
 
 
 #### ActionsCommand
@@ -116,3 +174,27 @@ In `$action` is the most-recent action from the actions workflow. So not the mos
  from the workflow. By default one of the `register`, `confirm` or `blacklist`.
 
 Be careful of adding (logging) the right action (with or without scope) for an user.
+
+
+#### StatusCommand
+
+The StatusCommand is for retrieving some status information.
+
+	$statusCommand = new DoubleOptIn\ClientApi\Client\Commands\StatusCommand();
+
+Sending the command to the api service:
+
+	$response = $client->send($sendCommand);
+	$status = $response->status();
+
+In `$status` is an instance of the Status model (DoubleOptIn\ClientApi\Client\Commands\Responses\Models\Status). Here 
+ you can access the following information:
+
+- site name
+- site type
+- storage time in seconds for the stored data (time after last touch)
+- credits left
+- soft quota limit
+- hard quota limit
+- daily credits usage (approximation)
+- unique mail hashes or identities
