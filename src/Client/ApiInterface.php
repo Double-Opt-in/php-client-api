@@ -2,6 +2,9 @@
 
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
 use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\DecryptedCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\Response;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\StatusResponse;
 use DoubleOptIn\ClientApi\Security\CryptographyEngine;
 
 /**
@@ -18,7 +21,7 @@ interface ApiInterface
 	 *
 	 * @param ClientCommand $command
 	 *
-	 * @return CommandResponse
+	 * @return Response|CommandResponse|DecryptedCommandResponse|StatusResponse
 	 */
 	public function send(ClientCommand $command);
 

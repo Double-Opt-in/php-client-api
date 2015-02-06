@@ -3,6 +3,9 @@
 use CommerceGuys\Guzzle\Plugin\Oauth2\GrantType\ClientCredentials;
 use DoubleOptIn\ClientApi\Client\Commands\ClientCommand;
 use DoubleOptIn\ClientApi\Client\Commands\Responses\CommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\DecryptedCommandResponse;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\Response;
+use DoubleOptIn\ClientApi\Client\Commands\Responses\StatusResponse;
 use DoubleOptIn\ClientApi\Config\ClientConfig;
 use DoubleOptIn\ClientApi\Config\Properties;
 use DoubleOptIn\ClientApi\Guzzle\Plugin\OAuth2Plugin;
@@ -117,7 +120,7 @@ class Api implements ApiInterface
 	 *
 	 * @param ClientCommand $command
 	 *
-	 * @return CommandResponse
+	 * @return Response|CommandResponse|DecryptedCommandResponse|StatusResponse
 	 */
 	public function send(ClientCommand $command)
 	{
