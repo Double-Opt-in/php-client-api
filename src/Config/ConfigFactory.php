@@ -19,6 +19,7 @@ class ConfigFactory
 	 *   'client_id' => '...',
 	 *   'client_secret' => '...',
 	 *   'site_token' => '',
+	 *   'cache_file' => '..',
 	 * )
 	 *
 	 * @param array $data
@@ -43,7 +44,12 @@ class ConfigFactory
 			? array()
 			: $data['http_client'];
 
-		return new ClientConfig($data['client_id'], $data['client_secret'], $data['site_token'], $baseUrl, $httpClientConfig);
+		$clientConfig = new ClientConfig($data['client_id'], $data['client_secret'], $data['site_token'], $baseUrl, $httpClientConfig);
+
+		if (array_key_exists('cache_file', $data))
+			$clientConfig->setAccessTokenCacheFile($data['cache_file']);
+
+		return $clientConfig;
 	}
 
 	/**
