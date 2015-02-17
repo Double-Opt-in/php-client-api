@@ -11,7 +11,7 @@ The PHP client api for Double Opt-in lets you integrate the double-opt.in servic
 Add to your composer.json following lines
 
 	"require": {
-		"double-opt-in/php-client-api": "~1.4"
+		"double-opt-in/php-client-api": "~1.5"
 	}
 
 ## Usage
@@ -58,6 +58,8 @@ The file has to have the following content:
 	    'client_id' => 'YOUR_CLIENT_ID',
 	    'client_secret' => 'YOUR_CLIENT_SECRET',
 	    'site_token' => 'YOUR_SITE_TOKEN',
+	    // optional cache file, recommended for better performance
+	    'cache_file' => 'path/to/writable/cachedir',
 	    // optional http client configuration values
 	    'http_client' => array(
 	        'verify' => false,
@@ -79,6 +81,8 @@ You need the following structure for your array:
     	'client_id' => 'YOUR_CLIENT_ID',
     	'client_secret' => 'YOUR_CLIENT_SECRET',
     	'site_token' => 'YOUR_SITE_TOKEN',
+    	// optional cache file, recommended for better performance
+    	'cache_file' => 'path/to/writable/cachedir',
     	// optional http client configuration values
     	'http_client' => array(
 			'verify' => false,
@@ -93,6 +97,23 @@ You can also set a configuration instance manually:
 	$client = new DoubleOptIn\ClientApi\Client\Api($config);
 
 That's it.
+
+#### Cache File option
+
+The ClientConfig object has the ability to cache an bearer token for its lifetime. It is recommended for better 
+ performance. The given cache file will be automatically appended with site token and client id to get a unique cache
+ for a concrete connection.
+
+Using the cache for the requested OAuth Access Token means the next request does not need any extra request for fetching
+ an access token again. Each next request uses the fetched access token again.
+
+Manually setting can be done by doing this:
+
+	$config = new DoubleOptIn\ClientApi\Config\ClientConfig($clientId, $clientSecret, $siteToken, $apiUrl, $httpClientConfig);
+	$config->setAccessTokenCacheFile('path/to/writable/cachedir/or-file-prefix');
+	$client = new DoubleOptIn\ClientApi\Client\Api($config);
+	
+Or use the config option as array with special key `cache_file`.
 
 
 ### The commands
