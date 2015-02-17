@@ -28,7 +28,7 @@ class ClientConfig
 	 *
 	 * @var string
 	 */
-	private $accessTokenCacheFile = '/tmp/access_token';
+	private $accessTokenCacheFile = null;
 
 	/**
 	 * site token
@@ -109,11 +109,16 @@ class ClientConfig
 	/**
 	 * returns AccessTokenCacheFile
 	 *
+	 * appended with site token and client id
+	 *
 	 * @return string
 	 */
 	public function getAccessTokenCacheFile()
 	{
-		return $this->accessTokenCacheFile;
+		if (empty($this->accessTokenCacheFile))
+			return null;
+
+		return $this->accessTokenCacheFile . '_' . $this->siteToken() . '-' . $this->clientId();
 	}
 
 	/**
@@ -125,6 +130,9 @@ class ClientConfig
 	 */
 	public function setAccessTokenCacheFile($accessTokenCacheFile)
 	{
+		if (is_dir($accessTokenCacheFile))
+			$accessTokenCacheFile .= DIRECTORY_SEPARATOR;
+
 		$this->accessTokenCacheFile = $accessTokenCacheFile;
 
 		return $this;
