@@ -12,10 +12,10 @@
 	"require": {
 		"php": ">=5.3.0",
 		"lib-curl": "*",
+		"guzzlehttp/guzzle": "~6.0",
 		"commerceguys/guzzle-oauth2-plugin": "~1.0"
 	},
 	"require-dev": {
-		"guzzle/guzzle": "~3.9",
 		"phpunit/phpunit": "*"
 	},
 	"autoload": {
